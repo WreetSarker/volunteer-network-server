@@ -14,7 +14,16 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const eventCollection = client.db("volunteer").collection("events");
-    console.log('database connected successfully');
+
+    app.post('/addEvent', (req, res) => {
+        const newEvent = req.body;
+        console.log('new event', newEvent);
+        eventCollection.insertOne(newEvent)
+            .then(result => {
+                console.log(result.insertedCount);
+                res.send(result.insertedCount > 0)
+            })
+    })
 
 });
 
