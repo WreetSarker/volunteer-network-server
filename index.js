@@ -15,6 +15,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     const eventCollection = client.db("volunteer").collection("events");
 
+
+    app.get('/events', (req, res) => {
+        eventCollection.find({})
+            .toArray((err, documents) => {
+                res.send(documents)
+            })
+
+    })
+
     app.post('/addEvent', (req, res) => {
         const newEvent = req.body;
         console.log('new event', newEvent);
