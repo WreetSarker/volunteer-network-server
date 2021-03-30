@@ -25,7 +25,7 @@ client.connect(err => {
     })
 
     app.get('/getPersonalEvents', (req, res) => {
-        personalEvents.find({})
+        personalEvents.find({ email: req.query.email })
             .toArray((err, documents) => {
                 res.send(documents)
             })
