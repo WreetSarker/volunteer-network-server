@@ -7,14 +7,14 @@ const bodyParser = require('body-parser');
 app.use(cors());
 app.use(bodyParser.json());
 require('dotenv').config();
-
+const ObjectID = require('mongodb').ObjectID;
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.enmmk.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const eventCollection = client.db("volunteer").collection("events");
-
+    const personalEvents = client.db("volunteer").collection("personalEvents");
 
     app.get('/events', (req, res) => {
         eventCollection.find({})
@@ -33,6 +33,20 @@ client.connect(err => {
                 res.send(result.insertedCount > 0)
             })
     })
+
+    app.post('/personalEvent', (req, res) => {
+        const newPersonalEvent = req.body;
+        personalEvents.insertOne(newPersonalEvent)
+            .then(result => {
+                res.send(result.insertedCount > 1)
+            })
+    })
+
+    // app.delete('deleteEvent/:id', (req, res) => {
+    //     const id = ObjectID(req.params.id);
+    //     eventCollection.findOneAndDelete({ _id: id })
+    //         .then(documents => res.send(!!documents.value))
+    // })
 
 });
 
