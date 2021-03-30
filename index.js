@@ -50,11 +50,11 @@ client.connect(err => {
             })
     })
 
-    // app.delete('deleteEvent/:id', (req, res) => {
-    //     const id = ObjectID(req.params.id);
-    //     eventCollection.findOneAndDelete({ _id: id })
-    //         .then(documents => res.send(!!documents.value))
-    // })
+    app.delete('deleteEvent/:id', (req, res) => {
+        const id = ObjectID(req.params.id);
+        personalEvents.findOneAndDelete({ _id: id })
+            .then(documents => res.send(!!documents.value))
+    })
 
 });
 
