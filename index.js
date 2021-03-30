@@ -24,6 +24,14 @@ client.connect(err => {
 
     })
 
+    app.get('/getPersonalEvents', (req, res) => {
+        personalEvents.find({})
+            .toArray((err, documents) => {
+                res.send(documents)
+            })
+
+    })
+
     app.post('/addEvent', (req, res) => {
         const newEvent = req.body;
         console.log('new event', newEvent);
